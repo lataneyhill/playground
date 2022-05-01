@@ -191,14 +191,18 @@ class ValueName(AST):
     def visit(self, visitor):
         visitor.acceptValueName(self)
 
+
 class LetBinding(AST):
     def __init__(self, value_name, expr):
         self.value_name = value_name
         self.expr = expr
+
     def __str__(self):
         return "LetBinding({}, {})".format(self.value_name, self.expr)
+
     def visit(self, visitor):
         visitor.acceptLetBinding(self)
+
 
 class ExprConstant(AST):
     def __init__(self, constant):
@@ -222,6 +226,7 @@ class ExprLet(AST):
 
     def visit(self, visitor):
         visitor.acceptExprLet(self)
+
 
 class Parser:
     def __init__(self, lexer):
@@ -274,10 +279,13 @@ class Parser:
 class PrettyPrinter:
     def __init__(self):
         self.output = ""
+
     def acceptConstant(self, v: Constant):
         self.output += str(v.typ)
+
     def acceptExprConstant(self, v: ExprConstant):
         v.constant.visit(self)
+
     def acceptExprLet(self, v: ExprLet):
         self.output += "let "
         if v.rec:
@@ -285,10 +293,12 @@ class PrettyPrinter:
         v.let_bindings.visit(self)
         self.output += " in "
         v.expr.visit(self)
+
     def acceptLetBinding(self, v: LetBinding):
         v.value_name.visit(self)
         self.output += " = "
         v.expr.visit(self)
+
     def acceptValueName(self, v: ValueName):
         self.output += v.token.lexeme
 

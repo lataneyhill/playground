@@ -22,13 +22,13 @@ from time import sleep
 #### CONSTANTS ####
 ###################
 
-ALIVE = 'X'
-DEAD = ' '
+ALIVE = "X"
+DEAD = " "
 
 WIDTH = 11
 HEIGHT = 12
-HBORDER = '-'*(WIDTH+2)
-VBORDER = '|'
+HBORDER = "-" * (WIDTH + 2)
+VBORDER = "|"
 
 
 ################
@@ -36,7 +36,7 @@ VBORDER = '|'
 ################
 
 # Tetromino example
-#WORLD = [[DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD],
+# WORLD = [[DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD],
 #         [DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD],
 #         [DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD],
 #         [DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD],
@@ -50,18 +50,20 @@ VBORDER = '|'
 #         [DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD]]
 
 # Glider example
-WORLD = [[DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD],
-         [DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD],
-         [DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD],
-         [DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD],
-         [DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD],
-         [DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD],
-         [DEAD, DEAD, DEAD, DEAD, ALIVE, ALIVE, ALIVE, DEAD, DEAD, DEAD, DEAD],
-         [DEAD, DEAD, DEAD, DEAD, ALIVE, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD],
-         [DEAD, DEAD, DEAD, DEAD, DEAD, ALIVE, DEAD, DEAD, DEAD, DEAD, DEAD],
-         [DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD],
-         [DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD],
-         [DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD]]
+WORLD = [
+    [DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD],
+    [DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD],
+    [DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD],
+    [DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD],
+    [DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD],
+    [DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD],
+    [DEAD, DEAD, DEAD, DEAD, ALIVE, ALIVE, ALIVE, DEAD, DEAD, DEAD, DEAD],
+    [DEAD, DEAD, DEAD, DEAD, ALIVE, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD],
+    [DEAD, DEAD, DEAD, DEAD, DEAD, ALIVE, DEAD, DEAD, DEAD, DEAD, DEAD],
+    [DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD],
+    [DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD],
+    [DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD],
+]
 
 
 ##############
@@ -71,15 +73,24 @@ WORLD = [[DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD, DEAD],
 # Returns the number of living cell in the Moore
 # neighborhood of 'past[row][col]'
 def call(past, row, col):
-    minRow = row-1 if row-1 >= 0 else HEIGHT-1
-    maxRow = row+1 if row+1 < HEIGHT else 0
-    minCol = col-1 if col-1 >= 0 else WIDTH-1
-    maxCol = col+1 if col+1 < WIDTH else 0
-    nabes = [(minRow, minCol), (minRow, col), (minRow, maxCol),
-             (row,    minCol),                (row,    maxCol),
-             (maxRow, minCol), (maxRow, col), (maxRow, maxCol)]
-    return reduce(lambda x,y: x+y,
-                  map(lambda t: 1 if past[t[0]][t[1]] == ALIVE else 0, nabes))
+    minRow = row - 1 if row - 1 >= 0 else HEIGHT - 1
+    maxRow = row + 1 if row + 1 < HEIGHT else 0
+    minCol = col - 1 if col - 1 >= 0 else WIDTH - 1
+    maxCol = col + 1 if col + 1 < WIDTH else 0
+    nabes = [
+        (minRow, minCol),
+        (minRow, col),
+        (minRow, maxCol),
+        (row, minCol),
+        (row, maxCol),
+        (maxRow, minCol),
+        (maxRow, col),
+        (maxRow, maxCol),
+    ]
+    return reduce(
+        lambda x, y: x + y, map(lambda t: 1 if past[t[0]][t[1]] == ALIVE else 0, nabes)
+    )
+
 
 # Calculate entropy(?) based on rule
 def next(rule):
@@ -88,11 +99,12 @@ def next(rule):
         for col in range(WIDTH):
             WORLD[row][col] = rule(past[row][col], call(past, row, col))
 
+
 # Prints a formatted state of the 'WORLD'
 def show():
     print(HBORDER)
     for row in WORLD:
-        print(VBORDER + ''.join(row) + VBORDER)
+        print(VBORDER + "".join(row) + VBORDER)
     print(HBORDER)
 
 
@@ -110,7 +122,9 @@ def mkRule(bs=(3,), ss=(2, 3)):
             return ALIVE
         else:
             return DEAD
+
     return rule
+
 
 # Random Rule Generator, B[0-8]*/S[0-8]*
 # NOTE: mkRand returns a rule, it is NOT a rule itself
@@ -121,9 +135,9 @@ def mkRand():
 
 
 RULES = {
-    'conway': ((3,), (2, 3)),
-    'day_night': ((3, 6, 7, 8), (3, 4, 6, 7, 8)),
-    'random': mkRand()
+    "conway": ((3,), (2, 3)),
+    "day_night": ((3, 6, 7, 8), (3, 4, 6, 7, 8)),
+    "random": mkRand(),
 }
 
 
@@ -131,10 +145,12 @@ RULES = {
 #### Main ####
 ##############
 
+
 def main():
-    clear = lambda: system('cls' if name == 'nt' else 'clear')
+    clear = lambda: system("cls" if name == "nt" else "clear")
 
     import sys
+
     if len(sys.argv) > 1:
         try:
             rule = mkRule(*RULES[sys.argv[1]])
@@ -149,9 +165,10 @@ def main():
         clear()
         show()
         next(rule)
-        print('Iteration: ' + str(iteration))
+        print("Iteration: " + str(iteration))
         iteration += 1
         sleep(delay)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()
