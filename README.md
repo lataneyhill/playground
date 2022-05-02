@@ -4,15 +4,15 @@
 
 ### Projects
 
-- dcomposer: A web front-end for generating docker-compose.yaml files
-- life et al: An implementation of game of life with the standard Conway rule and support for custom rules
-- pyml: An exceedingly small subset of the OCaml frontend in Python
+- [dcomposer](projects/dcomposer): A web front-end for generating docker-compose.yaml files
+- [life et al](projects/life_et_al): An implementation of game of life with the standard Conway rule and support for custom rules
+- [pyml](projects/pyml): An exceedingly small subset of the OCaml frontend in Python
   - https://craftinginterpreters.com/
   - https://ruslanspivak.com/lsbasi-part1/
 
 ### Skeletons
 
-- script.bash: A template for bash scripts
+- [bash](skeletons/script.bash): A template for bash scripts
 
 ## Style
 
